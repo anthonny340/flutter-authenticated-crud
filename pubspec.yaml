@@ -10,7 +10,8 @@ dependencies:
   dio: ^5.0.2
   flutter:
     sdk: flutter
-  flutter_riverpod: ^2.3.2
+  flutter_riverpod: ^3.0.3
+  formz: ^0.8.0
   go_router: ^6.2.0
   google_fonts: ^4.0.3
   path_provider: ^2.1.1
