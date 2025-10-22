@@ -69,14 +69,16 @@ class _LoginForm extends ConsumerWidget {
             onChanged: ref
                 .read(loginFormProvider.notifier)
                 .onEmailChange, //Es lo mismo
-            errorMessage: loginForm.email.errorMessage,
+            errorMessage:
+                loginForm.isFormPosted ? loginForm.email.errorMessage : null,
           ),
           const SizedBox(height: 30),
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
             onChanged: ref.read(loginFormProvider.notifier).onPasswordChanged,
-            errorMessage: loginForm.password.errorMessage,
+            errorMessage:
+                loginForm.isFormPosted ? loginForm.password.errorMessage : null,
           ),
           const SizedBox(height: 30),
           SizedBox(
