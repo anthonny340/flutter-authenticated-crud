@@ -1,7 +1,7 @@
 import 'package:teslo_shop/features/auth/domain/datasources/auth_datasource.dart';
 import 'package:teslo_shop/features/auth/domain/entities/user.dart';
 
-class AuthDatasourceImpl extends AuthDatasource {
+class AuthDataSourceImpl extends AuthDataSource {
   @override
   Future<User> checkAuthStatus(String token) {
     // TODO: implement checkAuthStatus
