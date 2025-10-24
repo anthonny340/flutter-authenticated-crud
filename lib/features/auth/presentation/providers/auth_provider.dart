@@ -17,13 +17,39 @@ class AuthNotifier extends StateNotifier<AuthState> {
   // Estos metodos terminan delegando el trabajo al repositorio por este motivo se crea
   // una instancia de AuthRepository en el provider y se lo manda como parametro al Notifier
   void loginUser(String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    try {
+      final user = await authRepository.login(email, password);
+      _setLoggedUser(user);
+    } on WrongCredentials {
+      logout('Credenciales no son correctas');
+    } catch (e) {
+      logout('Error no contorlado');
+    }
+
     // final user = await authRepository.login(email, password);
     // state = state.copyWith(user: user, authStatus: AuthStatus.autenticated);
   }
 
   void registerUser(String email, String password) async {}
   void checkAuthStatus() async {}
-  Future<void> logout() async {}
+
+  void _setLoggedUser(User user) {
+    //TODO: necesito guardar el token fisicamente para que sea persistente
+    state = state.copyWith(
+      user: user,
+      authStatus: AuthStatus.autenticated,
+    );
+  }
+
+  Future<void> logout([String? errorMessage]) async {
+    //TODO: limpia token
+    state = state.copyWith(
+        authStatus: AuthStatus.notAutenticated,
+        user: null,
+        errorMessage: errorMessage);
+  }
 }
 
 //! Primero se crea el State
