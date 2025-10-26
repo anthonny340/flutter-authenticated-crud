@@ -16,7 +16,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   // Estos metodos terminan delegando el trabajo al repositorio por este motivo se crea
   // una instancia de AuthRepository en el provider y se lo manda como parametro al Notifier
-  void loginUser(String email, String password) async {
+  Future<void> loginUser(String email, String password) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
     try {
