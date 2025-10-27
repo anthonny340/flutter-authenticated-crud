@@ -65,6 +65,9 @@ class _LoginForm extends ConsumerWidget {
       (previous, next) {
         if (next.errorMessage.isEmpty) return;
         showSnackBar(context, next.errorMessage);
+
+        //Limpiar el error después de mostrarlo
+        ref.read(authProvider.notifier).clearErrorMessage();
       },
     );
     final textStyles = Theme.of(context).textTheme;

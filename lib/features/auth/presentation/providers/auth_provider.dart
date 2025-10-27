@@ -22,16 +22,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final user = await authRepository.login(email, password);
       _setLoggedUser(user);
-      // } on WrongCredentials {
-      //   logout('Credenciales no son correctas');
-      // } on ConnectionTimeout {
-      //   logout('Timeout');
     } on CustomError catch (error) {
       logout(error.message);
     }
-
-    // final user = await authRepository.login(email, password);
-    // state = state.copyWith(user: user, authStatus: AuthStatus.autenticated);
   }
 
   void registerUser(String email, String password) async {}
@@ -51,6 +44,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
         authStatus: AuthStatus.notAutenticated,
         user: null,
         errorMessage: errorMessage);
+  }
+
+  void clearErrorMessage() {
+    state = state.copyWith(errorMessage: '');
   }
 }
 

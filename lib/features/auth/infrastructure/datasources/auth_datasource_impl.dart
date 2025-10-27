@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:teslo_shop/config/constants/environment.dart';
 import 'package:teslo_shop/features/auth/domain/domain.dart';
 import 'package:teslo_shop/features/auth/infrastructure/infrastructure.dart';
-import 'package:teslo_shop/features/auth/infrastructure/mappers/user_mapper.dart';
 
 class AuthDataSourceImpl extends AuthDataSource {
   final dio = Dio(BaseOptions(
@@ -26,7 +25,6 @@ class AuthDataSourceImpl extends AuthDataSource {
       final user = UserMapper.userJsonToEntity(response.data);
       return user;
     } on DioException catch (e) {
-      // print(e);
       if (e.response?.statusCode == 401) {
         throw CustomError(
             e.response?.data['message'] ?? 'Credenciales no validas');
