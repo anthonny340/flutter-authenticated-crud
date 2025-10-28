@@ -40,8 +40,28 @@ class AuthDataSourceImpl extends AuthDataSource {
   }
 
   @override
-  Future<User> register(String email, String password, String fullName) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<User> register(String email, String password, String fullName) async {
+    try {
+      final response = await dio.post('/auth/register', data: {
+        'email': email,
+        'password': password,
+        'fullName': fullName,
+      });
+
+      final user = UserMapper.userJsonToEntity(response.data);
+      return user;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 400) {
+        throw CustomError(
+            e.response?.data['message'] ?? 'No se ha podido crear el usuario');
+      }
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw CustomError(
+            e.response?.data['message'] ?? 'Se excedio el límite de tiempo');
+      }
+      throw CustomError('Something wrong happend');
+    } catch (e) {
+      throw CustomError('Unexpected: Something wrong happend');
+    }
   }
 }
