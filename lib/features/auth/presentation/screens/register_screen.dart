@@ -86,8 +86,6 @@ class _RegisterForm extends ConsumerWidget {
       },
     );
     final textStyles = Theme.of(context).textTheme;
-    String password = '';
-    String confirmPassword = '';
 
     return SingleChildScrollView(
       child: Padding(
@@ -101,7 +99,9 @@ class _RegisterForm extends ConsumerWidget {
               label: 'Nombre completo',
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
-                ref.read(registerFormProvider.notifier).onEmailChange;
+                ref
+                    .read(registerFormProvider.notifier)
+                    .onFullNameChanged(value);
               },
               errorMessage: registerForm.isFormPosted
                   ? registerForm.fullName.errorMessage
@@ -120,12 +120,8 @@ class _RegisterForm extends ConsumerWidget {
             CustomTextFormField(
               label: 'Contraseña',
               obscureText: true,
-              onChanged: (value) {
-                password = value;
-                ref
-                    .read(registerFormProvider.notifier)
-                    .onPasswordChanged(value);
-              },
+              onChanged:
+                  ref.read(registerFormProvider.notifier).onPasswordChanged,
               errorMessage: registerForm.isFormPosted
                   ? registerForm.password.errorMessage
                   : null,
@@ -134,11 +130,11 @@ class _RegisterForm extends ConsumerWidget {
             CustomTextFormField(
               label: 'Repita la contraseña',
               obscureText: true,
-              onChanged: (value) {
-                confirmPassword = value;
-              },
+              onChanged: ref
+                  .read(registerFormProvider.notifier)
+                  .onConfirmPasswordChanged,
               errorMessage: registerForm.isFormPosted
-                  ? registerForm.password.errorMessage
+                  ? registerForm.confirmPassword.errorMessage
                   : null,
             ),
             const SizedBox(height: 30),
