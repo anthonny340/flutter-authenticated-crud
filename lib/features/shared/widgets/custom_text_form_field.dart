@@ -32,17 +32,15 @@ class CustomTextFormField extends StatelessWidget {
 
     return Container(
       // padding: const EdgeInsets.only(bottom: 0, top: 15),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               topLeft: borderRadius,
               bottomLeft: borderRadius,
               bottomRight: borderRadius),
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withOpacity(0.06),
-                blurRadius: 10,
-                offset: const Offset(0, 5))
+                color: Colors.black12, blurRadius: 10, offset: Offset(0, 5))
           ]),
       child: TextFormField(
         onChanged: onChanged,

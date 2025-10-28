@@ -18,12 +18,15 @@ class ConfirmPassword extends FormzInput<String, ConfirmPasswordError> {
   String? get errorMessage {
     if (isValid || isPure) return null;
 
-    if (displayError == ConfirmPasswordError.empty)
+    if (displayError == ConfirmPasswordError.empty) {
       return 'El campo es requerido';
-    if (displayError == ConfirmPasswordError.length)
+    }
+    if (displayError == ConfirmPasswordError.length) {
       return 'Mínimo 6 caracteres';
-    if (displayError == ConfirmPasswordError.format)
+    }
+    if (displayError == ConfirmPasswordError.format) {
       return 'Debe de tener Mayúscula, letras y un número';
+    }
 
     return null;
   }
@@ -31,8 +34,9 @@ class ConfirmPassword extends FormzInput<String, ConfirmPasswordError> {
   // Override validator to handle validating a given input value.
   @override
   ConfirmPasswordError? validator(String value) {
-    if (value.isEmpty || value.trim().isEmpty)
+    if (value.isEmpty || value.trim().isEmpty) {
       return ConfirmPasswordError.empty;
+    }
     if (value.length < 6) return ConfirmPasswordError.length;
     if (!passwordRegExp.hasMatch(value)) return ConfirmPasswordError.format;
 
