@@ -52,8 +52,8 @@ class AuthDataSourceImpl extends AuthDataSource {
       return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 400) {
-        throw CustomError(
-            e.response?.data['message'] ?? 'No se ha podido crear el usuario');
+        throw CustomError(e.response?.data['message'].toString() ??
+            'No se ha podido crear el usuario');
       }
       if (e.type == DioExceptionType.connectionTimeout) {
         throw CustomError(

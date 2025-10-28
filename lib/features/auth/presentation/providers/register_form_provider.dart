@@ -25,31 +25,31 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
         isValid: Formz.validate([
           newEmail,
           state.password,
-          state.fullName,
           state.confirmPassword,
+          state.fullName,
         ]));
   }
 
   onPasswordChanged(String value) {
     final newPassword = Password.dirty(value);
-    state.copyWith(
+    state = state.copyWith(
         password: newPassword,
         isValid: Formz.validate([
-          newPassword,
           state.email,
-          state.fullName,
+          newPassword,
           state.confirmPassword,
+          state.fullName,
         ]));
   }
 
   onConfirmPasswordChanged(String value) {
-    final newConfirmPassword = Password.dirty(value);
-    state.copyWith(
+    final newConfirmPassword = ConfirmPassword.dirty(value);
+    state = state.copyWith(
         confirmPassword: newConfirmPassword,
         isValid: Formz.validate([
-          newConfirmPassword,
-          state.password,
           state.email,
+          state.password,
+          newConfirmPassword,
           state.fullName,
         ]));
   }
@@ -60,19 +60,19 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     state = state.copyWith(
         fullName: newFullName,
         isValid: Formz.validate([
-          newFullName,
-          state.password,
           state.email,
+          state.password,
           state.confirmPassword,
+          newFullName,
         ]));
   }
 
   onFormSubmit() async {
     _touchEveryField();
 
-    if (!state.isValid) return;
-
     // print(state);
+    // if (!state.isValid) return;
+
     await registerUserCallback(state.email.value, state.password.value,
         state.confirmPassword.value, state.fullName.value);
   }
@@ -80,7 +80,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
   void _touchEveryField() {
     final email = Email.dirty(state.email.value);
     final password = Password.dirty(state.password.value);
-    final confirmPassword = Password.dirty(state.confirmPassword.value);
+    final confirmPassword = ConfirmPassword.dirty(state.confirmPassword.value);
     final fullName = FullName.dirty(state.fullName.value);
 
     state = state.copyWith(
@@ -105,7 +105,7 @@ class RegisterFormState {
   final bool isValid;
   final Email email;
   final Password password;
-  final Password confirmPassword;
+  final ConfirmPassword confirmPassword;
   final FullName fullName;
 
   RegisterFormState(
@@ -114,7 +114,7 @@ class RegisterFormState {
       this.isValid = false,
       this.email = const Email.pure(),
       this.password = const Password.pure(),
-      this.confirmPassword = const Password.pure(),
+      this.confirmPassword = const ConfirmPassword.pure(),
       this.fullName = const FullName.pure()});
 
   RegisterFormState copyWith({
@@ -123,7 +123,7 @@ class RegisterFormState {
     bool? isValid,
     Email? email,
     Password? password,
-    Password? confirmPassword,
+    ConfirmPassword? confirmPassword,
     FullName? fullName,
   }) =>
       RegisterFormState(
@@ -132,6 +132,7 @@ class RegisterFormState {
         isValid: isValid ?? this.isValid,
         email: email ?? this.email,
         password: password ?? this.password,
+        confirmPassword: confirmPassword ?? this.confirmPassword,
         fullName: fullName ?? this.fullName,
       );
   @override

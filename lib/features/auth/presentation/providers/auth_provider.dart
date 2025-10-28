@@ -32,7 +32,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (password != confirmPassword) {
-      throw CustomError('Las contraseñas no son iguales');
+      logout('Las contraseñas no son iguales');
+      return;
     }
 
     try {
