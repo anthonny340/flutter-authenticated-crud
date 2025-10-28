@@ -27,7 +27,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void registerUser(String email, String password) async {}
+  void registerUser(String email, String password, String confirmPassword,
+      String fullName) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (password != confirmPassword) {
+      throw CustomError('Las contraseñas no son iguales');
+    }
+
+    try {
+      final user = await authRepository.register(email, password, fullName);
+      _setLoggedUser(user);
+    } on CustomError catch (error) {
+      logout(error.message);
+    }
+  }
+
   void checkAuthStatus() async {}
 
   void _setLoggedUser(User user) {
