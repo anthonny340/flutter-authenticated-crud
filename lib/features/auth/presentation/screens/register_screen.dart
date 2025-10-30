@@ -82,7 +82,7 @@ class _RegisterForm extends ConsumerWidget {
         if (next.errorMessage.isEmpty) return;
         showSnackBar(context, next.errorMessage);
 
-        ref.read(authProvider.notifier).clearErrorMessage();
+        // ref.read(authProvider.notifier).clearErrorMessage();
       },
     );
     final textStyles = Theme.of(context).textTheme;
