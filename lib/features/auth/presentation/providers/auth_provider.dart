@@ -21,7 +21,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier({
     required this.authRepository,
     required this.keyValueStorageService,
-  }) : super(AuthState());
+  }) : super(AuthState()) {
+    checkAuthStatus();
+  }
 
   // Estos metodos terminan delegando el trabajo al repositorio por este motivo se crea
   // una instancia de AuthRepository en el provider y se lo manda como parametro al Notifier
@@ -53,7 +55,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void checkAuthStatus() async {}
+  void checkAuthStatus() async {
+    final token = await keyValueStorageService.getValue<String>('token');
+
+    if (token == null) return logout();
+
+    try {
+      final user = await authRepository.checkAuthStatus(token);
+      _setLoggedUser(user);
+    } catch (e) {
+      logout();
+    }
+  }
 
   void _setLoggedUser(User user) async {
     await keyValueStorageService.setKeyValue('toker', user.token);
