@@ -34,9 +34,12 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 
     if (!state.isValid) return;
 
+    state = state.copyWith(isPosting: true);
+
 //Cuando hacemo un print del state va a llamar al metodo toString()
     // print(state);
     await loginUserCallback(state.email.value, state.password.value);
+    state = state.copyWith(isPosting: false);
   }
 
 //Se quiere verificar que todos los campos hayan sido manipulados puesto que se los crea
