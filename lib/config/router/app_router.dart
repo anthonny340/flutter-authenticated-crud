@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:teslo_shop/config/router/app_router_notifier.dart';
 import 'package:teslo_shop/features/auth/auth.dart';
 import 'package:teslo_shop/features/products/products.dart';
 
@@ -7,8 +8,10 @@ import 'package:teslo_shop/features/products/products.dart';
 //Se esta forma se construiria las rutas disponibles y accesibles segun el tipo de usuario
 final goRouterProvider = Provider(
   (ref) {
+    final goRouterNotifier = ref.read(goROuterNotifierProvider);
     return GoRouter(
       initialLocation: '/login',
+      refreshListenable: goRouterNotifier,
       routes: [
         //Primera pantalla
         GoRoute(
