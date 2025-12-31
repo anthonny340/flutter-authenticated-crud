@@ -9,6 +9,7 @@ final authProvider =
     StateNotifierProvider.autoDispose<AuthNotifier, AuthState>((ref) {
   final authRepositoryImpl = AuthRepositoryImpl();
   final keyValueStorageServiceImpl = KeyValueStorageServieImpl();
+  ref.keepAlive();
   return AuthNotifier(
       authRepository: authRepositoryImpl,
       keyValueStorageService: keyValueStorageServiceImpl);
