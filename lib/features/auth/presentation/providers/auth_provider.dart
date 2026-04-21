@@ -5,11 +5,10 @@ import 'package:teslo_shop/features/shared/infrastructure/services/key_value_sto
 import 'package:teslo_shop/features/shared/infrastructure/services/key_value_storage_service_impl.dart';
 
 //! Tercero crear el provider
-final authProvider =
-    StateNotifierProvider.autoDispose<AuthNotifier, AuthState>((ref) {
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepositoryImpl = AuthRepositoryImpl();
   final keyValueStorageServiceImpl = KeyValueStorageServieImpl();
-  ref.keepAlive();
+
   return AuthNotifier(
       authRepository: authRepositoryImpl,
       keyValueStorageService: keyValueStorageServiceImpl);
@@ -36,6 +35,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       _setLoggedUser(user);
     } on CustomError catch (error) {
       logout(error.message);
+    } catch (e) {
+      logout('Error no encontrado');
     }
   }
 
@@ -70,7 +71,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void _setLoggedUser(User user) async {
-    await keyValueStorageService.setKeyValue('toker', user.token);
+    await keyValueStorageService.setKeyValue('token', user.token);
 
     state = state.copyWith(
       user: user,

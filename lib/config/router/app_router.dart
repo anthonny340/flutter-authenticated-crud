@@ -11,12 +11,12 @@ final goRouterProvider = Provider(
   (ref) {
     final goRouterNotifier = ref.read(goROuterNotifierProvider);
     return GoRouter(
-      initialLocation: '/cheking-auth',
+      initialLocation: '/checking-auth',
       refreshListenable: goRouterNotifier,
       routes: [
         //Primera pantalla
         GoRoute(
-          path: '/cheking-auth',
+          path: '/checking-auth',
           builder: (context, state) => const CheckAuthStatusScreen(),
         ),
 
@@ -44,7 +44,8 @@ final goRouterProvider = Provider(
 
         final authStatus = goRouterNotifier.authStatus;
 
-        if (isGointTo == 'cheking-auth' && authStatus == AuthStatus.checking) {
+        if (isGointTo == '/checking-auth' &&
+            authStatus == AuthStatus.checking) {
           return null;
         }
 
@@ -57,7 +58,7 @@ final goRouterProvider = Provider(
         if (authStatus == AuthStatus.autenticated) {
           if (isGointTo == '/login' ||
               isGointTo == '/register' ||
-              isGointTo == '/cheking-auth') {
+              isGointTo == '/checking-auth') {
             return '/';
           }
         }
