@@ -7,6 +7,6 @@ class UserMapper {
         fullName: json['fullName'],
         //El json regresa una lista segun la respuesta de la peticion
         roles: List<String>.from(json['roles'].map((role) => role)),
-        token: json['token'],
+        token: json['token'] ?? '',
       );
 }
