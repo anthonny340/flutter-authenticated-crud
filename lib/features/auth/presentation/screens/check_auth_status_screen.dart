@@ -13,7 +13,7 @@ class CheckAuthStatusScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AuthState>(authProvider, (prev, next) {
       if (next.authStatus == AuthStatus.autenticated) {
-        context.go('/home');
+        context.go('/');
       }
       if (next.authStatus == AuthStatus.notAutenticated) {
         context.go('/login');
