@@ -1,6 +1,19 @@
+import 'package:dio/dio.dart';
+import 'package:teslo_shop/config/constants/environment.dart';
 import 'package:teslo_shop/features/products/domain/domain.dart';
 
 class ProductsDatasourceImpl extends ProductsDatasource {
+  late final Dio dio;
+  final String accessToken;
+
+  ProductsDatasourceImpl({required this.accessToken})
+      : dio = Dio(
+          BaseOptions(
+            baseUrl: Environment.apiUrl,
+            headers: {'Authorization': 'Bearer $accessToken'},
+          ),
+        );
+
   @override
   Future<Product> createUpdateProduct(Map<String, dynamic> productLike) {
     // TODO: implement creareUpdateProduct
@@ -14,9 +27,17 @@ class ProductsDatasourceImpl extends ProductsDatasource {
   }
 
   @override
-  Future<List<Product>> getProductsByPage({int limit = 10, int offset = 0}) {
-    // TODO: implement getProductsByPage
-    throw UnimplementedError();
+  Future<List<Product>> getProductsByPage(
+      {int limit = 10, int offset = 0}) async {
+    //TODO Se debe implementar un try catch en caso de un timeout o que el token de acceso no sea valido
+    final response =
+        await dio.get<List>('/api/products?limit=$limit&offset=$offset');
+    final List<Product> products = [];
+
+    for (var product in response.data ?? []) {
+      // product.add() //mappers
+    }
+    return products;
   }
 
   @override
