@@ -27,7 +27,7 @@ class ProductsNotifier extends Notifier<ProductsState> {
         limit: state.limit, offset: state.offset);
 
     if (products.isEmpty) {
-      state.copyWith(
+      state = state.copyWith(
         isLoading: false,
         isLastPage: true,
       );

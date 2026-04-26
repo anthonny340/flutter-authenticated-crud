@@ -3,23 +3,27 @@ import 'package:teslo_shop/features/auth/infrastructure/mappers/mappers.dart';
 import 'package:teslo_shop/features/products/domain/domain.dart';
 
 class ProductMapper {
-  static jsonToEntity(Map<String, dynamic> json) => Product(
-        id: json['id'],
-        title: json['title'],
-        price: double.parse(json['price'].toString()),
-        description: json['description'],
-        slug: json['slug'],
-        stock: json['stock'],
-        sizes: List<String>.from(
-            json['sizes'] ? json['sizes'].map((size) => size) : []),
-        gender: json['gender'],
-        tags: List<String>.from(
-            json['tags'] ? json['tags'].map((tag) => tag) : []),
-        images: List<String>.from(json['images']
-            ? json['images'].map((String image) => image.startsWith('http')
-                ? image
-                : '${Environment.apiUrl}/files/product/$image')
-            : []),
-        user: UserMapper.userJsonToEntity(json['user']),
-      );
+  static Product jsonToEntity(Map<String, dynamic> json) {
+    final images = List<String>.from(json['images'] ?? []);
+
+    return Product(
+      id: json['id'],
+      title: json['title'],
+      price: double.parse(json['price'].toString()),
+      description: json['description'],
+      slug: json['slug'],
+      stock: json['stock'],
+      sizes: List<String>.from(json['sizes'] ?? []),
+      gender: json['gender'],
+      tags: List<String>.from(json['tags'] ?? []),
+      images: images
+          .map((image) => image.startsWith('http')
+              ? image
+              : '${Environment.apiUrl}/files/product/$image')
+          .toList(),
+      user: json['user'] != null
+          ? UserMapper.userJsonToEntity(json['user'])
+          : null,
+    );
+  }
 }
