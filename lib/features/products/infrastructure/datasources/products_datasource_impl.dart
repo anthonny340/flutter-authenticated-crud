@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:teslo_shop/config/constants/environment.dart';
+import 'package:teslo_shop/features/auth/infrastructure/infrastructure.dart';
 import 'package:teslo_shop/features/products/domain/domain.dart';
 import '../mappers/product_mapper.dart';
 
@@ -30,15 +31,26 @@ class ProductsDatasourceImpl extends ProductsDatasource {
   @override
   Future<List<Product>> getProductsByPage(
       {int limit = 10, int offset = 0}) async {
-    //TODO Se debe implementar un try catch en caso de un timeout o que el token de acceso no sea valido
-    final response =
-        await dio.get<List>('/api/products?limit=$limit&offset=$offset');
-    final List<Product> products = [];
+    try {
+      final response =
+          await dio.get<List>('/products?limit=$limit&offset=$offset');
+      final List<Product> products = [];
 
-    for (var product in response.data ?? []) {
-      products.add(ProductMapper.jsonToEntity(product));
+      for (var product in response.data ?? []) {
+        products.add(ProductMapper.jsonToEntity(product));
+      }
+      return products;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw CustomError('Token no válido');
+      }
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw CustomError('Se excedio el límite de tiempo');
+      }
+      throw CustomError('Something wrong happend');
+    } catch (e) {
+      throw CustomError('Unexpected: Something wrong happend');
     }
-    return products;
   }
 
   @override
