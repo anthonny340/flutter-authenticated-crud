@@ -44,12 +44,14 @@ class _ProductsViewState extends ConsumerState<_ProductsView> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => ref.read(productsProvider.notifier).loadNextPage());
     scrollController.addListener(
       () {
         final maxScroll = scrollController.position.maxScrollExtent;
         final currentScroll = scrollController.position.pixels;
         if (currentScroll + 400 >= maxScroll) {
-          ref.read(productsProvider.notifier).loadNextPage();
+          Future.microtask(
+              () => ref.read(productsProvider.notifier).loadNextPage());
         }
       },
     );
@@ -65,7 +67,7 @@ class _ProductsViewState extends ConsumerState<_ProductsView> {
   Widget build(BuildContext context) {
     ProductsState productsState = ref.watch(productsProvider);
     return Padding(
-      padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: MasonryGridView.count(
         controller: scrollController,
         physics: const BouncingScrollPhysics(),
