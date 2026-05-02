@@ -18,6 +18,7 @@ class ProductNotifier extends Notifier<ProductState> {
 
   @override
   ProductState build() {
+    Future.microtask(loadProduct);
     return ProductState(id: productId);
   }
 
