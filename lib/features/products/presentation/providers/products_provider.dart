@@ -14,6 +14,7 @@ class ProductsNotifier extends Notifier<ProductsState> {
 
   @override
   ProductsState build() {
+    Future.microtask(loadNextPage);
     return ProductsState();
   }
 
