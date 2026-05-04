@@ -6,7 +6,7 @@ enum SlugError { empty, format }
 // Extend FormzInput and provide the input type and error type.
 class Slug extends FormzInput<String, SlugError> {
   static final RegExp slugRegExp = RegExp(
-    r'^[a-z0-9]+(?:_[a-z0-9]+)*$',
+    r'^[a-z0-9]+(?:[_-][a-z0-9]+)*$',
   );
   // Call super.pure to represent an unmodified form input.
   const Slug.pure() : super.pure('');
@@ -18,6 +18,7 @@ class Slug extends FormzInput<String, SlugError> {
     if (isValid || isPure) return null;
 
     if (displayError == SlugError.empty) return 'El campo es requerido';
+    if (displayError == SlugError.format) return 'Error en el formato';
 
     return null;
   }

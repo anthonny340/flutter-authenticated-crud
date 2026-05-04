@@ -16,7 +16,7 @@ class Price extends FormzInput<double, PriceError> {
 
     if (displayError == PriceError.empty) return 'El campo es requerido';
     if (displayError == PriceError.value) {
-      return 'El valor tiene que ser 0 mayor';
+      return 'El valor tiene que ser un numero, mayor o igual a 0';
     }
 
     return null;

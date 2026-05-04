@@ -19,7 +19,7 @@ class Stock extends FormzInput<int, StockError> {
       return 'El valor no tiene formato de numero';
     }
     if (displayError == StockError.value) {
-      return 'El valor tiene que ser 0 mayor';
+      return 'El valor tiene que ser un numero, mayor o igual a 0';
     }
 
     return null;
