@@ -22,9 +22,13 @@ class ProductFormNotifier extends Notifier<ProductFormState> {
     required this.product,
   });
 
+  //En una parte de este notifier debemos de crear o agregar el
+  //TODO createUpdateCallback
+
   @override
   ProductFormState build() {
     return ProductFormState(
+      //TODO onSubmitCallback: createUpdateCallback
       id: product.id,
       title: Title.dirty(product.title),
       slug: Slug.dirty(product.slug),
