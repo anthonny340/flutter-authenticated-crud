@@ -21,8 +21,10 @@ class ProductFormNotifier extends Notifier<ProductFormState> {
     required this.product,
   });
 
-  ProductsRepository get repositoryProvider =>
-      ref.watch(productsRepositoryProvider);
+  ProductsNotifier get productsNotifier => ref.watch(productsProvider.notifier);
+
+  // ProductsRepository get repositoryProvider =>
+  //     ref.watch(productsRepositoryProvider);
 
   @override
   ProductFormState build() {
@@ -69,8 +71,7 @@ class ProductFormNotifier extends Notifier<ProductFormState> {
     };
 
     try {
-      await repositoryProvider.createUpdateProduct(productLike);
-      return true;
+      return await productsNotifier.createUpdateProduct(productLike);
     } catch (e) {
       return false;
     }
