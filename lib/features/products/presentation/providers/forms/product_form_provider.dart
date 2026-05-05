@@ -46,9 +46,10 @@ class ProductFormNotifier extends Notifier<ProductFormState> {
     _touchEverything();
 
     if (!state.isFormValid) return false;
-    if (onSubmitCallback == null) return false;
+    //TODO regresar
+    // if (onSubmitCallback == null) return false;
 
-    final product = {
+    final productLike = {
       'id': state.id,
       'title': state.title.value,
       'price': state.price.value,
@@ -57,11 +58,16 @@ class ProductFormNotifier extends Notifier<ProductFormState> {
       'stock': state.inStock.value,
       'sizes': state.sizes,
       'gender': state.gender,
-      'tags': state.tags.split(','),
+      'tags': state.tags
+          .split(',')
+          .map(
+            (tag) => tag.trim(),
+          )
+          .toList(),
       'images': state.images
           .map(
             (image) =>
-                image.replaceAll('${Environment.apiUrl}/file/product/', ''),
+                image.replaceAll('${Environment.apiUrl}/files/product/', ''),
           )
           .toList(),
     };

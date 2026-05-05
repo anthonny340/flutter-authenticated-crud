@@ -34,7 +34,11 @@ class ProductScreen extends ConsumerWidget {
                   product: productState.product!,
                 )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          ref
+              .read(productFormProvider(productState.product!).notifier)
+              .onFormSubmit();
+        },
         child: const Icon(Icons.save_as_outlined),
       ),
     );
@@ -137,6 +141,9 @@ class _ProductInformation extends ConsumerWidget {
             label: 'Descripción',
             keyboardType: TextInputType.multiline,
             initialValue: productForm.description,
+            onChanged: ref
+                .read(productFormProvider(product).notifier)
+                .onDescriptionChanges,
           ),
           CustomProductField(
             isBottomField: true,
@@ -144,6 +151,8 @@ class _ProductInformation extends ConsumerWidget {
             label: 'Tags (Separados por coma)',
             keyboardType: TextInputType.multiline,
             initialValue: productForm.tags,
+            onChanged:
+                ref.read(productFormProvider(product).notifier).onTagsChanges,
           ),
           const SizedBox(height: 100),
         ],
