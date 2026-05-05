@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:teslo_shop/config/config.dart';
 import 'package:teslo_shop/features/products/domain/domain.dart';
+import 'package:teslo_shop/features/products/presentation/providers/providers.dart';
 import 'package:teslo_shop/features/shared/shared.dart';
 
 //PROVIDER
@@ -14,21 +15,18 @@ final productFormProvider = NotifierProvider.autoDispose
 
 //NOTIFIER
 class ProductFormNotifier extends Notifier<ProductFormState> {
-  final void Function(Map<String, dynamic> productLike)? onSubmitCallback;
   final Product product;
 
   ProductFormNotifier({
-    this.onSubmitCallback,
     required this.product,
   });
 
-  //En una parte de este notifier debemos de crear o agregar el
-  //TODO createUpdateCallback
+  ProductsRepository get repositoryProvider =>
+      ref.watch(productsRepositoryProvider);
 
   @override
   ProductFormState build() {
     return ProductFormState(
-      //TODO onSubmitCallback: createUpdateCallback
       id: product.id,
       title: Title.dirty(product.title),
       slug: Slug.dirty(product.slug),
@@ -46,8 +44,6 @@ class ProductFormNotifier extends Notifier<ProductFormState> {
     _touchEverything();
 
     if (!state.isFormValid) return false;
-    //TODO regresar
-    // if (onSubmitCallback == null) return false;
 
     final productLike = {
       'id': state.id,
@@ -72,8 +68,12 @@ class ProductFormNotifier extends Notifier<ProductFormState> {
           .toList(),
     };
 
-    return true;
-    //TODO llamar al onSubmitCallback
+    try {
+      await repositoryProvider.createUpdateProduct(productLike);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   void _touchEverything() {
